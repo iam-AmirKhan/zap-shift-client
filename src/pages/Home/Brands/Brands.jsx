@@ -24,7 +24,7 @@ const Brands = () => {
   return (
     <Swiper
       loop={true}
-      slidesPerView={4}
+      slidesPerView={1}
       centeredSlides={true}
       spaceBetween={30}
       grabCursor={true}

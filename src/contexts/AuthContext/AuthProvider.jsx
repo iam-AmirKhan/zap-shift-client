@@ -8,8 +8,8 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
+  GoogleAuthProvider,
 } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -32,24 +32,24 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
-  const logOut = () =>{
+  const logOut = () => {
     setLoading(true);
     return signOut(auth);
-  }
+  };
 
-  const updateUserProfile = (profile)=>{
-    return updateProfile(auth.currentUser, profile)
-  }
+  const updateUserProfile = (profile) => {
+    return updateProfile(auth.currentUser, profile);
+  };
 
-  useEffect(() =>{
-const unSubscribe = onAuthStateChanged(auth,(currentUser)=>{
-setUser(currentUser);
-setLoading(false);
-})
-return() =>{
-  unSubscribe();
-}
-  },[])
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+
+    return () => unSubscribe();
+  }, []);
+
   const authInfo = {
     user,
     loading,
@@ -60,7 +60,11 @@ return() =>{
     updateUserProfile,
   };
 
-  return <AuthContext value={authInfo}>{children}</AuthContext>;
+  return (
+    <AuthContext.Provider value={authInfo}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
